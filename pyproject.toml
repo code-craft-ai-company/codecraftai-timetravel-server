@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "<package name>"
-description = "<package description>"
+name = "automojo-timetravel-server"
+description = "Automation Mojo - Time Travel Server"
 version = "0.0.1"
 authors = []
 readme = "README.md"
@@ -13,16 +13,11 @@ classifiers = [
 keywords = [
     "python"
 ]
-packages = [{include="mojo", from="source/packages"}]
+packages = [{include="automojo", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-flask = ">=3.0.3"
-flask-restx = ">=1.3.0"
-gunicorn = ">=22.0.0"
-flask-oidc = ">=2.1.1"
-okta = ">=2.9.5"
-mojo-runtime = ">=1.3.15"
+automojo-webworks = { git = "https://github.com/automationmojo/automojo-webworks.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 myst-parser = "^0.18.1"
