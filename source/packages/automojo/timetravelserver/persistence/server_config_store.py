@@ -11,6 +11,7 @@ CONFIG_SCHEMA = {
     "data_retention_days": {"type": int, "default": 30},
     "max_concurrent_connections": {"type": int, "default": 100},
     "default_trace_granularity": {"type": str, "default": "function"},
+    "heartbeat_timeout_seconds": {"type": int, "default": 30},
 }
 
 class ServerConfigStore:
