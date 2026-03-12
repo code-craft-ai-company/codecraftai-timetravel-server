@@ -2,14 +2,14 @@
 
 ## Implementation Tasks
 
-- [ ] Create `streamreceiver/unix_receiver.py` with `UnixSocketStreamReceiver`
-- [ ] Implement socket file cleanup on start and stop
-- [ ] Reuse handshake/auth logic from TCP receiver (extract common base)
-- [ ] Implement `start()` and `stop()` methods
+- [x] Create `streamreceiver/unix_receiver.py` with `UnixSocketStreamReceiver`
+- [x] Implement socket file cleanup on start and stop
+- [x] Reuse handshake/auth logic from TCP receiver (extract common base)
+- [x] Implement `start()` and `stop()` methods
 
 ## Testing Tasks
 
-- [ ] Test listener accepts connections on configured Unix socket path
-- [ ] Test stale socket file is removed on start
-- [ ] Test socket file is removed on stop
-- [ ] Test authentication and data forwarding work identically to TCP
+- [x] Test listener accepts connections on configured Unix socket path
+- [x] Test stale socket file is removed on start
+- [x] Test socket file is removed on stop
+- [x] Test authentication and data forwarding work identically to TCP

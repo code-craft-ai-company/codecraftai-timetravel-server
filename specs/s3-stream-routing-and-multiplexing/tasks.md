@@ -2,15 +2,15 @@
 
 ## Implementation Tasks
 
-- [ ] Create `streamreceiver/stream_router.py` with `StreamRouter`
-- [ ] Implement `route_stream()` — create storage reference, register in routing table
-- [ ] Implement `get_data_reference()` — lookup from routing table
-- [ ] Implement `finalize_route()` — finalize storage, update session
-- [ ] Ensure thread safety with locking
+- [x] Create `streamreceiver/stream_router.py` with `StreamRouter`
+- [x] Implement `route_stream()` — create storage reference, register in routing table
+- [x] Implement `get_data_reference()` — lookup from routing table
+- [x] Implement `finalize_route()` — finalize storage, update session
+- [x] Ensure thread safety with locking
 
 ## Testing Tasks
 
-- [ ] Test routing creates separate storage for different processes
-- [ ] Test routing creates separate storage for different sessions
-- [ ] Test concurrent routing operations are thread-safe
-- [ ] Test finalize_route updates session data reference
+- [x] Test routing creates separate storage for different processes
+- [x] Test routing creates separate storage for different sessions
+- [x] Test concurrent routing operations are thread-safe
+- [x] Test finalize_route updates session data reference
