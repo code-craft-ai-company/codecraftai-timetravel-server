@@ -2,15 +2,15 @@
 
 ## Implementation Tasks
 
-- [ ] Create `tracedata/call_graph.py` with `CallGraphNode` and `CallGraphBuilder`
-- [ ] Implement stack-based call graph construction algorithm
-- [ ] Implement per-thread graph separation
-- [ ] Compute duration from call/return timestamp offsets
+- [x] Create `tracedata/call_graph.py` with `CallGraphNode` and `CallGraphBuilder`
+- [x] Implement stack-based call graph construction algorithm
+- [x] Implement per-thread graph separation
+- [x] Compute duration from call/return timestamp offsets
 
 ## Testing Tasks
 
-- [ ] Test simple linear call graph (A calls B calls C)
-- [ ] Test nested/recursive call graph
-- [ ] Test multi-thread produces separate graphs
-- [ ] Test timing data accuracy
-- [ ] Test unmatched CallEvent (missing ReturnEvent) handling
+- [x] Test simple linear call graph (A calls B calls C)
+- [x] Test nested/recursive call graph
+- [x] Test multi-thread produces separate graphs
+- [x] Test timing data accuracy
+- [x] Test unmatched CallEvent (missing ReturnEvent) handling
