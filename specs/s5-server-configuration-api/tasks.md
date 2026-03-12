@@ -2,13 +2,13 @@
 
 ## Implementation Tasks
 
-- [ ] Create `server_config.py` API namespace
-- [ ] Implement GET all, GET by key, PUT by key endpoints
-- [ ] Add admin role requirement and validation
+- [x] Create `server_config.py` API namespace
+- [x] Implement GET all, GET by key, PUT by key endpoints
+- [x] Add admin role requirement and validation
 
 ## Testing Tasks
 
-- [ ] Test GET all returns all config with defaults
-- [ ] Test PUT updates a value
-- [ ] Test PUT rejects invalid type
-- [ ] Test non-admin user receives 403
+- [x] Test GET all returns all config with defaults
+- [x] Test PUT updates a value
+- [x] Test PUT rejects invalid type
+- [x] Test non-admin user receives 403
