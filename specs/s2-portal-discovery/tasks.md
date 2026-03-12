@@ -2,14 +2,14 @@
 
 ## Implementation Tasks
 
-- [ ] Create `debugcontrol/` package with `__init__.py`
-- [ ] Create `debugcontrol/portal_discovery.py` with `PortalDiscoveryService`
-- [ ] Implement `discover()` — send `list_portals`, parse response, update snapshots
-- [ ] Define `PortalInfo` dataclass (name, is_active)
+- [x] Create `debugcontrol/` package with `__init__.py`
+- [x] Create `debugcontrol/portal_discovery.py` with `PortalDiscoveryService`
+- [x] Implement `discover()` — send `list_portals`, parse response, update snapshots
+- [x] Define `PortalInfo` dataclass (name, is_active)
 
 ## Testing Tasks
 
-- [ ] Test discovery returns portal list from mock remote
-- [ ] Test discovery updates portal snapshots in database
-- [ ] Test discovery handles connection failure gracefully
-- [ ] Test discovery with unknown process_id returns error
+- [x] Test discovery returns portal list from mock remote
+- [x] Test discovery updates portal snapshots in database
+- [x] Test discovery handles connection failure gracefully
+- [x] Test discovery with unknown process_id returns error
