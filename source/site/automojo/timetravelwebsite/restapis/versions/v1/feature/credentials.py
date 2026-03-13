@@ -1,29 +1,23 @@
-from flask import request
-from flask_restx import Namespace, Resource, fields
+from typing import Dict, Any
+from automojo.webworks.endpoints.restblueprint import RestBlueprint
+from automojo.webworks.endpoints.accesspolicy import AccessPolicy
 
-CREDENTIALS_NAMESPACE_PATH = "/credentials"
-credentials_ns = Namespace("Credential Management v1", description="Credential Management API")
+class RequireAdmin(AccessPolicy):
+    def check_access(self, request: Any) -> bool:
+        auth_header = getattr(request, 'headers', {}).get('Authorization')
+        if not auth_header:
+            raise ValueError("Unauthorized")
+        if auth_header == "Bearer user-token":
+            raise ValueError("Forbidden: Admin role required")
+        elif auth_header != "Bearer admin-token":
+            raise ValueError("Unauthorized")
+        return True
 
-# Models for serialization
-credential_model = credentials_ns.model('Credential', {
-    'id': fields.String(description='Credential ID'),
-    'name': fields.String(description='Credential name'),
-    'type': fields.String(description='Credential type (api_key, token)'),
-    'status': fields.String(description='Status (active, revoked)'),
-    'created_at': fields.String(description='Creation timestamp'),
-    'last_used': fields.String(description='Last usage timestamp')
-})
-
-credential_create_model = credentials_ns.model('CredentialCreate', {
-    'id': fields.String(description='Credential ID'),
-    'name': fields.String(description='Credential name'),
-    'token': fields.String(description='Plaintext token (only shown once)'),
-})
-
-credential_list_model = credentials_ns.model('CredentialList', {
-    'total': fields.Integer(description='Total number of credentials'),
-    'credentials': fields.List(fields.Nested(credential_model))
-})
+class CredentialAPI(RestBlueprint):
+    base_path = "/credentials"
+    tags = ["Credential Management v1"]
+    version = "1.0"
+    access_policy = RequireAdmin()
 
 # Mock Database
 MOCK_CREDENTIALS = {
@@ -31,120 +25,75 @@ MOCK_CREDENTIALS = {
     "2": {"id": "2", "name": "developer-token", "type": "token", "status": "revoked", "created_at": "2023-09-01T12:00:00Z", "last_used": "2023-09-15T12:00:00Z"},
 }
 
-def require_admin(func):
-    """Mock authentication and authorization decorator for admin role"""
-    def wrapper(*args, **kwargs):
-        auth_header = request.headers.get("Authorization")
-        if not auth_header:
-            credentials_ns.abort(401, "Unauthorized")
+@CredentialAPI.read(leaf="")
+def list_credentials() -> Dict[str, Any]:
+    """List credentials"""
+    creds = list(MOCK_CREDENTIALS.values())
+    return {
+        'total': len(creds),
+        'credentials': creds
+    }
 
-        # Mock checking role
-        if auth_header == "Bearer user-token":
-            credentials_ns.abort(403, "Forbidden: Admin role required")
-        elif auth_header != "Bearer admin-token":
-            credentials_ns.abort(401, "Unauthorized")
+@CredentialAPI.create(leaf="")
+def create_credential(body: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a new credential"""
+    if not body or 'name' not in body or 'type' not in body:
+        raise ValueError("Missing required fields (name, type)")
 
-        return func(*args, **kwargs)
-    wrapper.__name__ = func.__name__
-    wrapper.__doc__ = func.__doc__
-    return wrapper
+    new_id = str(len(MOCK_CREDENTIALS) + 1)
+    new_token = f"tok-{new_id}-abcdef123456"
 
+    MOCK_CREDENTIALS[new_id] = {
+        "id": new_id,
+        "name": body['name'],
+        "type": body['type'],
+        "status": "active",
+        "created_at": "2023-10-24T12:00:00Z",
+        "last_used": None
+    }
 
-@credentials_ns.route("/")
-class CredentialList(Resource):
-    @credentials_ns.doc(security='Bearer Auth')
-    @require_admin
-    @credentials_ns.marshal_with(credential_list_model)
-    def get(self):
-        """List credentials"""
-        creds = list(MOCK_CREDENTIALS.values())
-        return {
-            'total': len(creds),
-            'credentials': creds
-        }
+    return {
+        "id": new_id,
+        "name": body['name'],
+        "token": new_token
+    }
 
-    @credentials_ns.doc(security='Bearer Auth')
-    @require_admin
-    @credentials_ns.marshal_with(credential_create_model, code=201)
-    def post(self):
-        """Create a new credential"""
-        data = request.json
-        if not data or 'name' not in data or 'type' not in data:
-            credentials_ns.abort(400, "Missing required fields (name, type)")
+@CredentialAPI.create(leaf="/{id}/rotate")
+def rotate_credential(id: str) -> Dict[str, Any]:
+    """Rotate an existing credential"""
+    if id not in MOCK_CREDENTIALS:
+        raise ValueError("Credential not found")
 
-        new_id = str(len(MOCK_CREDENTIALS) + 1)
-        new_token = f"tok-{new_id}-abcdef123456"
+    if MOCK_CREDENTIALS[id]['status'] != 'active':
+        raise ValueError("Cannot rotate non-active credential")
 
-        MOCK_CREDENTIALS[new_id] = {
-            "id": new_id,
-            "name": data['name'],
-            "type": data['type'],
-            "status": "active",
-            "created_at": "2023-10-24T12:00:00Z",
-            "last_used": None
-        }
+    new_token = f"tok-{id}-newrotated987654"
+    return {
+        "id": id,
+        "name": MOCK_CREDENTIALS[id]['name'],
+        "token": new_token
+    }
 
-        return {
-            "id": new_id,
-            "name": data['name'],
-            "token": new_token
-        }, 201
+@CredentialAPI.create(leaf="/{id}/revoke")
+def revoke_credential(id: str) -> Dict[str, Any]:
+    """Revoke a credential"""
+    if id not in MOCK_CREDENTIALS:
+        raise ValueError("Credential not found")
 
+    if MOCK_CREDENTIALS[id]['status'] == 'revoked':
+        raise ValueError("Credential is already revoked")
 
-@credentials_ns.route("/<string:id>/rotate")
-class CredentialRotate(Resource):
-    @credentials_ns.doc(security='Bearer Auth')
-    @require_admin
-    @credentials_ns.marshal_with(credential_create_model)
-    def post(self, id):
-        """Rotate an existing credential"""
-        if id not in MOCK_CREDENTIALS:
-            credentials_ns.abort(404, "Credential not found")
+    MOCK_CREDENTIALS[id]['status'] = 'revoked'
+    return {"message": "Credential revoked successfully"}
 
-        if MOCK_CREDENTIALS[id]['status'] != 'active':
-            credentials_ns.abort(400, "Cannot rotate non-active credential")
+@CredentialAPI.delete(leaf="/{id}")
+def delete_credential(id: str) -> Dict[str, Any]:
+    """Delete a revoked credential"""
+    if id not in MOCK_CREDENTIALS:
+        raise ValueError("Credential not found")
 
-        new_token = f"tok-{id}-newrotated987654"
-        return {
-            "id": id,
-            "name": MOCK_CREDENTIALS[id]['name'],
-            "token": new_token
-        }, 200
+    if MOCK_CREDENTIALS[id]['status'] != 'revoked':
+        raise ValueError("Can only delete revoked credentials")
 
-
-@credentials_ns.route("/<string:id>/revoke")
-class CredentialRevoke(Resource):
-    @credentials_ns.doc(security='Bearer Auth')
-    @require_admin
-    def post(self, id):
-        """Revoke a credential"""
-        if id not in MOCK_CREDENTIALS:
-            credentials_ns.abort(404, "Credential not found")
-
-        if MOCK_CREDENTIALS[id]['status'] == 'revoked':
-            credentials_ns.abort(400, "Credential is already revoked")
-
-        MOCK_CREDENTIALS[id]['status'] = 'revoked'
-        return {"message": "Credential revoked successfully"}, 200
-
-
-@credentials_ns.route("/<string:id>")
-class CredentialDetail(Resource):
-    @credentials_ns.doc(security='Bearer Auth')
-    @require_admin
-    def delete(self, id):
-        """Delete a revoked credential"""
-        if id not in MOCK_CREDENTIALS:
-            credentials_ns.abort(404, "Credential not found")
-
-        if MOCK_CREDENTIALS[id]['status'] != 'revoked':
-            credentials_ns.abort(400, "Can only delete revoked credentials")
-
-        del MOCK_CREDENTIALS[id]
-        return {"message": "Credential deleted successfully"}, 200
-
-def publish_namespaces(version_prefix):
-    ns_list = [
-        (credentials_ns, "".join([version_prefix, CREDENTIALS_NAMESPACE_PATH]))
-    ]
-    return ns_list
+    del MOCK_CREDENTIALS[id]
+    return {"message": "Credential deleted successfully"}
