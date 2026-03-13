@@ -2,17 +2,17 @@
 
 ## Implementation Tasks
 
-- [ ] Create `trace_data.py` API namespace
-- [ ] Implement GET events with multi-criteria query parameters
-- [ ] Implement GET timeline view
-- [ ] Implement GET call-graph view
-- [ ] Implement GET variable history and variable list endpoints
-- [ ] Add pagination support and authentication
+- [x] Create `trace_data.py` API namespace
+- [x] Implement GET events with multi-criteria query parameters
+- [x] Implement GET timeline view
+- [x] Implement GET call-graph view
+- [x] Implement GET variable history and variable list endpoints
+- [x] Add pagination support and authentication
 
 ## Testing Tasks
 
-- [ ] Test event query with various filter combinations
-- [ ] Test timeline view returns correct structure
-- [ ] Test call-graph view returns tree structure
-- [ ] Test variable history returns chronological snapshots
-- [ ] Test pagination on event queries
+- [x] Test event query with various filter combinations
+- [x] Test timeline view returns correct structure
+- [x] Test call-graph view returns tree structure
+- [x] Test variable history returns chronological snapshots
+- [x] Test pagination on event queries

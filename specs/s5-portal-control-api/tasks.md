@@ -2,13 +2,13 @@
 
 ## Implementation Tasks
 
-- [ ] Create `portals.py` API namespace
-- [ ] Implement GET portals list, POST activate/deactivate (single and bulk)
-- [ ] Add authentication
+- [x] Create `portals.py` API namespace
+- [x] Implement GET portals list, POST activate/deactivate (single and bulk)
+- [x] Add authentication
 
 ## Testing Tasks
 
-- [ ] Test list portals returns correct data
-- [ ] Test activate/deactivate single portal
-- [ ] Test bulk activate/deactivate
-- [ ] Test unauthenticated request returns 401
+- [x] Test list portals returns correct data
+- [x] Test activate/deactivate single portal
+- [x] Test bulk activate/deactivate
+- [x] Test unauthenticated request returns 401

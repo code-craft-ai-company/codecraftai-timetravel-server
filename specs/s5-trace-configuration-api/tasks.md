@@ -2,12 +2,12 @@
 
 ## Implementation Tasks
 
-- [ ] Create `trace_config.py` API namespace
-- [ ] Implement GET and PUT endpoints
-- [ ] Add authentication
+- [x] Create `trace_config.py` API namespace
+- [x] Implement GET and PUT endpoints
+- [x] Add authentication
 
 ## Testing Tasks
 
-- [ ] Test GET returns configuration
-- [ ] Test PUT updates configuration
-- [ ] Test invalid granularity value returns 400
+- [x] Test GET returns configuration
+- [x] Test PUT updates configuration
+- [x] Test invalid granularity value returns 400

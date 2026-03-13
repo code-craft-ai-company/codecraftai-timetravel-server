@@ -2,14 +2,14 @@
 
 ## Implementation Tasks
 
-- [ ] Create `health.py` API namespace
-- [ ] Implement GET health endpoint with all metrics
-- [ ] Implement component health checks (database, stream receiver, storage)
-- [ ] Ensure no authentication is required
+- [x] Create `health.py` API namespace
+- [x] Implement GET health endpoint with all metrics
+- [x] Implement component health checks (database, stream receiver, storage)
+- [x] Ensure no authentication is required
 
 ## Testing Tasks
 
-- [ ] Test health endpoint returns correct structure
-- [ ] Test healthy status when all components are up
-- [ ] Test degraded status when a component has issues
-- [ ] Test no authentication is required
+- [x] Test health endpoint returns correct structure
+- [x] Test healthy status when all components are up
+- [x] Test degraded status when a component has issues
+- [x] Test no authentication is required
