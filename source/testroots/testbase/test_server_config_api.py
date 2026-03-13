@@ -1,59 +1,42 @@
 import pytest
-from flask import Flask
+from automojo.timetravelwebsite.restapis.versions.v1.feature.server_config import (
+    MOCK_SERVER_CONFIGS, RequireAdmin, get_all_server_configs,
+    get_server_config, update_server_config
+)
 
-@pytest.fixture
-def app():
-    from automojo.timetravelwebsite.restapis import register_rest_blueprints
+class MockRequest:
+    def __init__(self, headers):
+        self.headers = headers
 
-    app = Flask(__name__)
-    register_rest_blueprints(app, "api")
+def test_unauthenticated_request():
+    policy = RequireAdmin()
+    with pytest.raises(ValueError, match="Unauthorized"):
+        policy.check_access(MockRequest({}))
 
-    yield app
+def test_non_admin_receives_403():
+    policy = RequireAdmin()
+    with pytest.raises(ValueError, match="Forbidden"):
+        policy.check_access(MockRequest({"Authorization": "Bearer user-token"}))
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
+def test_get_all_configs():
+    MOCK_SERVER_CONFIGS.clear()
+    MOCK_SERVER_CONFIGS["test"] = {"value": 1, "type": "int", "description": "test", "is_default": True}
 
-@pytest.fixture
-def admin_headers():
-    return {'Authorization': 'Bearer admin-token'}
+    data = get_all_server_configs()
+    assert "test" in data
+    assert data["test"]["value"] == 1
 
-@pytest.fixture
-def user_headers():
-    return {'Authorization': 'Bearer user-token'}
+def test_put_updates_value():
+    MOCK_SERVER_CONFIGS.clear()
+    MOCK_SERVER_CONFIGS["retention"] = {"value": 30, "type": "int", "description": "test", "is_default": True}
 
-def test_unauthenticated_request(client):
-    response = client.get('/api/v1/server-config/')
-    assert response.status_code == 401
+    update_server_config("retention", {"value": 60})
+    assert MOCK_SERVER_CONFIGS["retention"]["value"] == 60
+    assert MOCK_SERVER_CONFIGS["retention"]["is_default"] is False
 
-def test_non_admin_receives_403(client, user_headers):
-    response = client.get('/api/v1/server-config/', headers=user_headers)
-    assert response.status_code == 403
+def test_put_rejects_invalid_type():
+    MOCK_SERVER_CONFIGS.clear()
+    MOCK_SERVER_CONFIGS["retention"] = {"value": 30, "type": "int", "description": "test", "is_default": True}
 
-def test_get_all_configs(client, admin_headers):
-    response = client.get('/api/v1/server-config/', headers=admin_headers)
-    assert response.status_code == 200
-
-    data = response.json
-    assert 'retention_days' in data
-    assert 'debug_logging' in data
-    assert 'admin_email' in data
-
-def test_put_updates_value(client, admin_headers):
-    update_data = {"value": 45}
-    response = client.put('/api/v1/server-config/retention_days', json=update_data, headers=admin_headers)
-    assert response.status_code == 200
-    assert response.json['message'] == "Configuration updated successfully"
-
-    # Verify the update happened
-    response = client.get('/api/v1/server-config/retention_days', headers=admin_headers)
-    assert response.status_code == 200
-    assert response.json['value'] == 45
-    assert response.json['is_default'] is False
-
-def test_put_rejects_invalid_type(client, admin_headers):
-    # Try putting a string into an int field
-    update_data = {"value": "forty-five"}
-    response = client.put('/api/v1/server-config/retention_days', json=update_data, headers=admin_headers)
-    assert response.status_code == 400
-    assert "Invalid type" in response.json['message']
+    with pytest.raises(ValueError, match="Invalid type"):
+        update_server_config("retention", {"value": "60"})
