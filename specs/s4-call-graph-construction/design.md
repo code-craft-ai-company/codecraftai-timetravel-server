@@ -4,7 +4,7 @@
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     tracedata/
         call_graph.py   # CallGraphBuilder, CallGraphNode
 ```

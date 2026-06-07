@@ -7,7 +7,7 @@ An abstract storage interface with a filesystem implementation. Trace data is st
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     persistence/
         trace_storage/
             __init__.py

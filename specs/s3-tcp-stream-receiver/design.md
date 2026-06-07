@@ -4,7 +4,7 @@
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     streamreceiver/
         __init__.py
         tcp_receiver.py   # TcpStreamReceiver

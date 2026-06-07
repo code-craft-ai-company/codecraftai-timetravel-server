@@ -21,7 +21,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-call-graph-tree.js
     tt-call-graph-node.js
     tt-thread-selector.js

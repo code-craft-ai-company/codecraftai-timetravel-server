@@ -31,7 +31,7 @@ customElements.define('tt-health-summary', HealthSummaryCard);
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-health-summary.js
     tt-process-summary.js
     tt-session-summary.js

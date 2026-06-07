@@ -7,7 +7,7 @@ The credential store provides a service-layer abstraction over the `Credential` 
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     persistence/
         credential_store.py    # CredentialStore class
 ```

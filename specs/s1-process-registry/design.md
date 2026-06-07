@@ -7,7 +7,7 @@ A service class providing query and management operations over the `RegisteredPr
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     registration/
         process_registry.py   # ProcessRegistry class
 ```

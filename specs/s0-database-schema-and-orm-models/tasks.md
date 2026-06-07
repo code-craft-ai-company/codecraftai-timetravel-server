@@ -2,7 +2,7 @@
 
 ## Implementation Tasks
 
-- [ ] Create `source/packages/automojo/timetravelserver/persistence/` package with `__init__.py`
+- [ ] Create `source/packages/ccai/timetravelserver/persistence/` package with `__init__.py`
 - [ ] Create `models/base.py` with declarative base and `BaseMixin` (id, created_at, updated_at)
 - [ ] Create `models/user.py` — `User` ORM model
 - [ ] Create `models/credential.py` — `Credential` ORM model

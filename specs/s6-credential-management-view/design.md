@@ -21,7 +21,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-credential-table.js
     tt-credential-create-form.js
     tt-token-display-modal.js

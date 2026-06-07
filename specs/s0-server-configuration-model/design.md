@@ -7,7 +7,7 @@ A service-layer abstraction over the `ServerConfiguration` ORM model (S0.1) that
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     persistence/
         server_config_store.py    # ServerConfigStore class
 ```

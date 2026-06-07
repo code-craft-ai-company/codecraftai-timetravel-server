@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.debug_sessions import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.debug_sessions import (
     MOCK_SESSIONS, RequireAuth, list_sessions, create_session, get_session, close_session
 )
 

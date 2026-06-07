@@ -1,6 +1,6 @@
 import pytest
 import time
-from automojo.timetravelserver.streamreceiver.flow_control import FlowController, FlowControlStatus
+from ccai.timetravelserver.streamreceiver.flow_control import FlowController, FlowControlStatus
 
 def test_flow_controller_registration():
     fc = FlowController(high_watermark=1000, low_watermark=500, global_memory_limit=5000)

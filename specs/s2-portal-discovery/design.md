@@ -7,7 +7,7 @@ Uses the command dispatcher (S2.5) to query a pod's portal registry and update l
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     debugcontrol/
         __init__.py
         portal_discovery.py   # PortalDiscoveryService

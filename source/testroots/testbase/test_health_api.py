@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.health import MOCK_HEALTH_STATUS, get_health
+from ccai.timetravelwebsite.restapis.versions.v1.feature.health import MOCK_HEALTH_STATUS, get_health
 
 # Since we don't have the full webworks app context set up yet in the tests
 # we test the handler directly to ensure the logic works.

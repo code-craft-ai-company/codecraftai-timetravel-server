@@ -1,6 +1,6 @@
 import pytest
-from automojo.timetravelserver.tracedata.events import TraceEvent, EventType, PortalEnterEvent, PortalExitEvent
-from automojo.timetravelserver.tracedata.portal_filter import PortalScopeFilter
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, PortalEnterEvent, PortalExitEvent
+from ccai.timetravelserver.tracedata.portal_filter import PortalScopeFilter
 
 def create_event(event_type: EventType, portal_name: str, timestamp: float) -> TraceEvent:
     # Use PortalEnterEvent / PortalExitEvent specifically for portal events

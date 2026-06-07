@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.processes import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.processes import (
     MOCK_PROCESSES, RequireAuth, list_processes, get_process, delete_process, refresh_process,
     disconnect_process, register_process, unregister_process, heartbeat_process
 )

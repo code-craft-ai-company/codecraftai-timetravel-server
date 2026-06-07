@@ -7,7 +7,7 @@ Service methods to control portal activation state on remote processes via the c
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     debugcontrol/
         portal_control.py   # PortalControlService
 ```

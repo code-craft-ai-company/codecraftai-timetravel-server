@@ -1,6 +1,6 @@
 import pytest
 import threading
-from automojo.timetravelserver.streamreceiver.stream_router import StreamRouter
+from ccai.timetravelserver.streamreceiver.stream_router import StreamRouter
 
 class MockStorageBackend:
     def __init__(self, process_id, session_id):

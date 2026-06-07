@@ -2,8 +2,8 @@ import pytest
 import io
 import struct
 import pickle
-from automojo.timetravelserver.streamreceiver.deserializer import HybridFormatDeserializer
-from automojo.timetravelserver.tracedata.events import EventType, CallEvent, ReturnEvent, LineEvent
+from ccai.timetravelserver.streamreceiver.deserializer import HybridFormatDeserializer
+from ccai.timetravelserver.tracedata.events import EventType, CallEvent, ReturnEvent, LineEvent
 
 def pack_event(event_type: EventType, timestamp: float, payload: dict) -> bytes:
     type_str = event_type.value.encode('utf-8')

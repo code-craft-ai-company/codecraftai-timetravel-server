@@ -7,7 +7,7 @@ Combines process registry lookup with remote command dispatch to refresh portal 
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     registration/
         metadata_refresh.py   # MetadataRefreshService
 ```

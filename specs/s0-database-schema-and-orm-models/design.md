@@ -12,7 +12,7 @@ This feature establishes the relational persistence layer for the time travel se
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     persistence/
         __init__.py
         models/

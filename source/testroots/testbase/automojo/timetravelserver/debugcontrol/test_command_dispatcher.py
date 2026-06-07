@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import pytest
 
-from automojo.timetravelserver.debugcontrol.command_dispatcher import (
+from ccai.timetravelserver.debugcontrol.command_dispatcher import (
     CommandDispatcher,
     CommandError,
     CommandTimeoutError,

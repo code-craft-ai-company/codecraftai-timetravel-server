@@ -1,13 +1,13 @@
 # S0.5 — Trace Event Data Model (Server-Side): Design
 
 ## Overview
-Python dataclasses representing all trace event types. These mirror `automojo-timetravel-pod` F0.4 but add server-side indexing metadata (process_id, session_id).
+Python dataclasses representing all trace event types. These mirror `codecraftai-timetravel-pod` F0.4 but add server-side indexing metadata (process_id, session_id).
 
 ## Technical Architecture
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     tracedata/
         __init__.py
         events.py     # All event dataclasses
