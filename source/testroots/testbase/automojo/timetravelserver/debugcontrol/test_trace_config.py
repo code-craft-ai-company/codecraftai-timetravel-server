@@ -3,11 +3,11 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from automojo.timetravelserver.persistence.models.base import Base
-from automojo.timetravelserver.persistence.models import RegisteredProcess
-from automojo.timetravelserver.registration.process_registry import ProcessRegistry
-from automojo.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher, CommandError
-from automojo.timetravelserver.debugcontrol.trace_config import TraceConfigService, TraceConfigInfo
+from ccai.timetravelserver.persistence.models.base import Base
+from ccai.timetravelserver.persistence.models import RegisteredProcess
+from ccai.timetravelserver.registration.process_registry import ProcessRegistry
+from ccai.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher, CommandError
+from ccai.timetravelserver.debugcontrol.trace_config import TraceConfigService, TraceConfigInfo
 
 class MockCommandDispatcher(CommandDispatcher):
     def __init__(self, mock_responses=None, error=None):

@@ -1,6 +1,6 @@
 import pytest
-from automojo.timetravelserver.tracedata.events import EventType, VariableSnapshotEvent, TraceEvent
-from automojo.timetravelserver.tracedata.variable_tracker import VariableTracker, VariableChange
+from ccai.timetravelserver.tracedata.events import EventType, VariableSnapshotEvent, TraceEvent
+from ccai.timetravelserver.tracedata.variable_tracker import VariableTracker, VariableChange
 
 def create_snap(name: str, value: str, ts: float) -> VariableSnapshotEvent:
     return VariableSnapshotEvent(

@@ -28,7 +28,7 @@ The `<tt-portal-panel>` renders:
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-portal-panel.js
     tt-portal-item.js
 ```

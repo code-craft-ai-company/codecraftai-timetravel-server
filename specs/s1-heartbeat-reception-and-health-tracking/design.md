@@ -28,7 +28,7 @@ class HealthChecker:
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     registration/
         heartbeat.py     # HeartbeatService, HealthChecker
 ```

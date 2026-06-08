@@ -3,10 +3,10 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from automojo.timetravelserver.persistence.models.base import Base
-from automojo.timetravelserver.persistence.models import RegisteredProcess, TraceSession
-from automojo.timetravelserver.registration.process_registry import ProcessRegistry
-from automojo.timetravelserver.debugcontrol.session_manager import DebugSessionManager
+from ccai.timetravelserver.persistence.models.base import Base
+from ccai.timetravelserver.persistence.models import RegisteredProcess, TraceSession
+from ccai.timetravelserver.registration.process_registry import ProcessRegistry
+from ccai.timetravelserver.debugcontrol.session_manager import DebugSessionManager
 
 @pytest.fixture
 def db_session_factory():

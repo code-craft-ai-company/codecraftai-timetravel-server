@@ -2,7 +2,7 @@
 
 ## Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     auth/
         __init__.py
         user_auth.py       # UserAuthService

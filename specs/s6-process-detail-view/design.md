@@ -25,7 +25,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-process-metadata.js
     tt-trace-config-editor.js
     tt-session-list.js

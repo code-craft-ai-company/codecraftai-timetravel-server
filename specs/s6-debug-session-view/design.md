@@ -25,7 +25,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-session-header.js
     tt-session-metadata.js
     tt-session-portals.js

@@ -31,7 +31,7 @@ customElements.define('tt-process-table', ProcessTable);
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-process-table.js
     tt-state-filter.js
     tt-search-bar.js

@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.portal_control import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.portal_control import (
     MOCK_PORTALS, RequireAuth, list_portals, activate_portal, deactivate_portal, bulk_action_portals
 )
 

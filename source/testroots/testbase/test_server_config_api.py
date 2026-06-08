@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.server_config import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.server_config import (
     MOCK_SERVER_CONFIGS, RequireAdmin, get_all_server_configs,
     get_server_config, update_server_config
 )

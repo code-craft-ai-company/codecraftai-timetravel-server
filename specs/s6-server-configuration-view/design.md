@@ -30,7 +30,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-config-table.js
     tt-config-editor.js
     tt-config-toolbar.js

@@ -17,7 +17,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/restapis/versions/v1/feature/
+source/site/ccai/timetravelwebsite/restapis/versions/v1/feature/
     processes.py   # Process management namespace
 ```
 

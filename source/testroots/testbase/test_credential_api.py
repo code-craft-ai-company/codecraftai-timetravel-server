@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.credentials import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.credentials import (
     MOCK_CREDENTIALS, RequireAdmin, list_credentials, create_credential,
     rotate_credential, revoke_credential, delete_credential
 )

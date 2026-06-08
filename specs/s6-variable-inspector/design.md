@@ -28,7 +28,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-variable-list.js
     tt-variable-history.js
     tt-variable-stepper.js

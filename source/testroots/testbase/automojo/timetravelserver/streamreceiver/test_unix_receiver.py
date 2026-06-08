@@ -3,7 +3,7 @@ import socket
 import os
 import struct
 import time
-from automojo.timetravelserver.streamreceiver.unix_receiver import UnixSocketStreamReceiver
+from ccai.timetravelserver.streamreceiver.unix_receiver import UnixSocketStreamReceiver
 
 class MockSession:
     def __init__(self, sock, token):

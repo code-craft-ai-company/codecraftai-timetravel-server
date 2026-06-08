@@ -4,7 +4,7 @@
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     debugcontrol/
         command_dispatcher.py   # CommandDispatcher
 ```

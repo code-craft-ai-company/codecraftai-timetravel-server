@@ -2,7 +2,7 @@ import pytest
 import socket
 import threading
 import time
-from automojo.timetravelserver.streamreceiver.session_lifecycle import StreamSessionLifecycle
+from ccai.timetravelserver.streamreceiver.session_lifecycle import StreamSessionLifecycle
 
 class MockStorageBackend:
     def __init__(self):

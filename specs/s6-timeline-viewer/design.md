@@ -30,7 +30,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-timeline-canvas.js
     tt-timeline-controls.js
     tt-event-type-filter.js

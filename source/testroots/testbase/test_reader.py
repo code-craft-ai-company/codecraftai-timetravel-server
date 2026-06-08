@@ -2,8 +2,8 @@ import pytest
 import io
 import struct
 import pickle
-from automojo.timetravelserver.tracedata.events import EventType
-from automojo.timetravelserver.tracedata.reader import TraceFileReader
+from ccai.timetravelserver.tracedata.events import EventType
+from ccai.timetravelserver.tracedata.reader import TraceFileReader
 
 def create_mock_event_bytes(event_type_str: str, timestamp: float, payload: dict) -> bytes:
     type_bytes = event_type_str.encode('utf-8')

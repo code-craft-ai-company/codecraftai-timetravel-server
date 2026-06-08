@@ -1,5 +1,5 @@
 import pytest
-from automojo.timetravelwebsite.restapis.versions.v1.feature.trace_config import (
+from ccai.timetravelwebsite.restapis.versions.v1.feature.trace_config import (
     MOCK_TRACE_CONFIGS, RequireAuth, get_trace_config, update_trace_config
 )
 

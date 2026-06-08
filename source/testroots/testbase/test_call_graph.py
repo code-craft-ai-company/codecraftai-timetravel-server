@@ -1,6 +1,6 @@
 import pytest
-from automojo.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent
-from automojo.timetravelserver.tracedata.call_graph import CallGraphBuilder, CallGraphNode
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent
+from ccai.timetravelserver.tracedata.call_graph import CallGraphBuilder, CallGraphNode
 
 def create_call(name: str, ts: float, process_id="p1", session_id="s1") -> CallEvent:
     return CallEvent(

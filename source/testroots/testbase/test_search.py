@@ -1,6 +1,6 @@
 import pytest
-from automojo.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, LineEvent, VariableSnapshotEvent
-from automojo.timetravelserver.tracedata.search import TraceSearchEngine, SearchQuery, SearchResult
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, LineEvent, VariableSnapshotEvent
+from ccai.timetravelserver.tracedata.search import TraceSearchEngine, SearchQuery, SearchResult
 
 def create_call(ts: float, file: str, func: str) -> CallEvent:
     return CallEvent(

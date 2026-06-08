@@ -24,7 +24,7 @@
 
 ### Module Layout
 ```
-source/site/automojo/timetravelwebsite/static/js/components/
+source/site/ccai/timetravelwebsite/static/js/components/
     tt-source-viewer.js
     tt-line-annotation.js
     tt-line-event-popup.js

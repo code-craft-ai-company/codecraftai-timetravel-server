@@ -41,7 +41,7 @@ An HTTP endpoint that receives pod registration, validates credentials, and crea
 
 ### Module Layout
 ```
-source/packages/automojo/timetravelserver/
+source/packages/ccai/timetravelserver/
     registration/
         __init__.py
         service.py     # RegistrationService class

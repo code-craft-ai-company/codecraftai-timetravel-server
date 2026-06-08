@@ -1,8 +1,8 @@
 ==================================
-Automation Mojo TimeTravel Server
+Code Craft AI TimeTravel Server
 ==================================
 
-The ``automojo-timetravel-server`` package is a web service that provides a web interface for the ``automojo-timetravel-pod`` package. It is built on the ``automojo-webservice-flask`` stack and offers trace reception, persistence, remote debug control, and a web UI for time-travel debugging of instrumented applications.
+The ``codecraftai-timetravel-server`` package is a web service that provides a web interface for the ``codecraftai-timetravel-pod`` package. It is built on the ``codecraftai-webservice-flask`` stack and offers trace reception, persistence, remote debug control, and a web UI for time-travel debugging of instrumented applications.
 
 Highlights
 ==========
@@ -53,7 +53,7 @@ Run the single-host test suite:
 
 .. code-block:: bash
 
-   testbase testing run --root source/testroots/automojo --includes=automojo.tests.singlehost.timetravelserver --output=./.output
+   testbase testing run --root source/testroots/ccai --includes=ccai.tests.singlehost.timetravelserver --output=./.output
 
 Standards and Conventions
 =========================

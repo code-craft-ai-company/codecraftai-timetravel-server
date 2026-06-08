@@ -1,6 +1,6 @@
 import pytest
-from automojo.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent
-from automojo.timetravelserver.tracedata.timeline import TimelineBuilder, Timeline
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent
+from ccai.timetravelserver.tracedata.timeline import TimelineBuilder, Timeline
 
 def create_mock_event(event_type: EventType, timestamp: float) -> TraceEvent:
     return TraceEvent(

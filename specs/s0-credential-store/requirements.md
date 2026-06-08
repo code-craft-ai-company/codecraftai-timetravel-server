@@ -1,7 +1,7 @@
 # S0.2 — Credential Store: Requirements
 
 ## Overview
-Secure storage for authentication tokens used to validate incoming connections from `automojo-timetravel-pod` remote-control instances (pod F5.2). Supports creation, rotation, revocation, and lookup of per-instance credentials.
+Secure storage for authentication tokens used to validate incoming connections from `codecraftai-timetravel-pod` remote-control instances (pod F5.2). Supports creation, rotation, revocation, and lookup of per-instance credentials.
 
 ## User Stories
 
