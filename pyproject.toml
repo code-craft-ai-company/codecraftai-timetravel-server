@@ -2,12 +2,12 @@
 name = "codecraftai-timetravel-server"
 description = "Code Craft AI - Time Travel Server"
 version = "0.0.1"
-authors = []
-readme = "README.md"
-license = "LICENSE.txt"
+authors = ["Myron Walker <myron.walker@gmail.com>"]
+readme = "README.rst"
+license = "LicenseRef-CodeCraftAI-Dual-License"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Operating System :: POSIX"
 ]
 keywords = [
@@ -17,7 +17,6 @@ packages = [{include="ccai", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-codecraftai-webworks = { git = "https://github.com/automationmojo/codecraftai-webworks.git", branch = "main" }
 sqlalchemy = "^2.0.48"
 alembic = "^1.18.4"
 

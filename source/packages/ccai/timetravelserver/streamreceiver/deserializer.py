@@ -1,10 +1,93 @@
+import io
+import os
 import struct
 import pickle
 import logging
-from typing import BinaryIO, Iterator, Any, Dict
+from typing import BinaryIO, Iterator, Any, Dict, FrozenSet, Tuple
 from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent, LineEvent
 
 logger = logging.getLogger(__name__)
+
+
+# Trace payloads are plain data dictionaries (function names, line numbers, and
+# argument/return/local *values* that the pod has already reduced to primitive
+# representations before transmission).  The payload arrives over a network
+# socket, so it is UNTRUSTED input -- a bare ``pickle.loads`` here is a
+# remote-code-execution vector, because a malicious peer can embed a
+# ``__reduce__`` gadget that imports ``os``/``subprocess`` and runs arbitrary
+# code while the stream is being decoded.  We therefore restrict unpickling to a
+# fixed allow-list of safe builtin container and scalar types.  Anything outside
+# this set raises ``UnpicklingError``, which the deserialize loop already
+# catches and turns into a skipped event, so the worst a hostile payload can do
+# is be dropped -- never executed.  (Primitive payloads are reconstructed by
+# dedicated pickle opcodes that never reach ``find_class``, so legitimate trace
+# data is unaffected.)
+_SAFE_PICKLE_GLOBALS: FrozenSet[Tuple[str, str]] = frozenset({
+    ("builtins", "dict"),
+    ("builtins", "list"),
+    ("builtins", "tuple"),
+    ("builtins", "set"),
+    ("builtins", "frozenset"),
+    ("builtins", "str"),
+    ("builtins", "bytes"),
+    ("builtins", "bytearray"),
+    ("builtins", "int"),
+    ("builtins", "float"),
+    ("builtins", "complex"),
+    ("builtins", "bool"),
+    ("builtins", "NoneType"),
+})
+
+
+class _RestrictedUnpickler(pickle.Unpickler):
+    """
+        A :class:`pickle.Unpickler` that only permits a fixed allow-list of safe
+        builtin container and scalar types.
+
+        Used to deserialize trace payloads received over the network without
+        exposing the server to pickle's arbitrary-object-construction (and
+        therefore arbitrary-code-execution) behaviour.
+    """
+
+    def find_class(self, module: str, name: str) -> Any:
+        """
+            Override the global-resolution hook to reject any class that is not
+            on the safe allow-list.
+
+            :param module: The module the pickle stream is requesting an import from.
+            :param name: The qualified name being requested from ``module``.
+
+            :returns: The resolved class, when it is on the allow-list.
+            :raises: pickle.UnpicklingError
+        """
+        requested = (module, name)
+        if requested not in _SAFE_PICKLE_GLOBALS:
+            err_msg_lines = ["Refusing to unpickle a disallowed global from an untrusted trace payload."]
+            err_msg_lines.append("MODULE: {}".format(module))
+            err_msg_lines.append("NAME: {}".format(name))
+
+            err_msg = os.linesep.join(err_msg_lines)
+            raise pickle.UnpicklingError(err_msg)
+
+        rtnval = super().find_class(module, name)
+        return rtnval
+
+
+def _safe_pickle_loads(payload_data: bytes) -> Any:
+    """
+        Deserialize a trace payload using a restricted unpickler that only
+        permits safe builtin container and scalar types.
+
+        :param payload_data: The raw pickle bytes read from the stream.
+
+        :returns: The deserialized payload object.
+        :raises: pickle.UnpicklingError
+    """
+    buffer = io.BytesIO(payload_data)
+    unpickler = _RestrictedUnpickler(buffer)
+    rtnval = unpickler.load()
+    return rtnval
+
 
 class HybridFormatDeserializer:
     # Envelope format:
@@ -52,7 +135,7 @@ class HybridFormatDeserializer:
                 break
 
             try:
-                payload = pickle.loads(payload_data)
+                payload = _safe_pickle_loads(payload_data)
             except Exception as e:
                 logger.error(f"Failed to deserialize payload: {e}. Skipping event.")
                 continue

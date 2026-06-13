@@ -1,9 +1,23 @@
 import pytest
 import io
+import os
 import struct
 import pickle
 from ccai.timetravelserver.streamreceiver.deserializer import HybridFormatDeserializer
+from ccai.timetravelserver.streamreceiver.deserializer import _safe_pickle_loads
 from ccai.timetravelserver.tracedata.events import EventType, CallEvent, ReturnEvent, LineEvent
+
+
+class _PickleGadget:
+    """
+        A pickle payload that, under a stock ``pickle.loads``, would resolve and
+        call ``eval`` -- i.e. a real remote-code-execution gadget.  Used to prove
+        the restricted unpickler refuses non-allow-listed globals.
+    """
+
+    def __reduce__(self):
+        rtnval = (eval, ("1 + 1",))
+        return rtnval
 
 def pack_event(event_type: EventType, timestamp: float, payload: dict) -> bytes:
     type_str = event_type.value.encode('utf-8')
@@ -154,6 +168,46 @@ def test_deserializer_corrupted_envelope_detected():
     events = list(deserializer.deserialize_stream(stream, "p1", "s1", "port1"))
 
     assert len(events) == 0
+
+def test_safe_pickle_loads_rejects_disallowed_global():
+    # A reduce gadget that targets ``eval`` (not on the safe allow-list) must be
+    # refused before the callable is ever invoked.
+    gadget_bytes = pickle.dumps(_PickleGadget())
+
+    with pytest.raises(pickle.UnpicklingError):
+        _safe_pickle_loads(gadget_bytes)
+
+
+def test_safe_pickle_loads_allows_primitive_payload():
+    # Legitimate primitive trace payloads must still round-trip unchanged.
+    payload = {"function_name": "f", "line_number": 3, "arguments": {"a": 1}, "tags": ["x", "y"]}
+    payload_bytes = pickle.dumps(payload)
+
+    result = _safe_pickle_loads(payload_bytes)
+
+    assert result == payload
+
+
+def test_deserializer_skips_malicious_pickle_gadget():
+    # An RCE gadget embedded in the stream must be skipped (never executed) and
+    # the deserializer must continue on to the next, legitimate event.
+    deserializer = HybridFormatDeserializer()
+    stream = io.BytesIO()
+
+    gadget_bytes = pickle.dumps(_PickleGadget())
+    type_str = EventType.CALL.value.encode('utf-8')
+    bad_env = struct.pack("!B", len(type_str)) + type_str + struct.pack("!d I", 1000.0, len(gadget_bytes))
+    stream.write(bad_env + gadget_bytes)
+
+    good_payload = {"function_name": "safe_func", "file_name": "f.py", "line_number": 1, "arguments": {}}
+    stream.write(pack_event(EventType.CALL, 1001.0, good_payload))
+    stream.seek(0)
+
+    events = list(deserializer.deserialize_stream(stream, "p1", "s1", "port1"))
+
+    assert len(events) == 1
+    assert events[0].function_name == "safe_func"
+
 
 def test_deserializer_round_trip():
     import tempfile

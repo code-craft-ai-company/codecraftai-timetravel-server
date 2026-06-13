@@ -5,6 +5,11 @@ from sqlalchemy.exc import NoResultFound
 from ccai.timetravelserver.persistence.models import ServerConfiguration
 
 CONFIG_SCHEMA = {
+    # Binding to all interfaces (0.0.0.0) is intentional: the time-travel
+    # service is reached by pods running on other hosts.  The receiver is not
+    # secured by restricting the bind address -- it is secured by the
+    # credential handshake performed before any stream session is accepted
+    # (see ``streamreceiver.base_receiver.BaseStreamReceiver._handle_connection``).
     "listen_address": {"type": str, "default": "0.0.0.0"},
     "listen_port": {"type": int, "default": 8080},
     "tls_enabled": {"type": bool, "default": False},
