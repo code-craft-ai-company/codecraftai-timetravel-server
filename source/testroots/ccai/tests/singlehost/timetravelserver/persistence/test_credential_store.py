@@ -15,7 +15,7 @@ from ccai.timetravelserver.persistence.credential_store import CredentialStore
 from typing import Generator
 
 @testbase.register.resource_factory()
-def create_db_session() -> Generator[Session, None, None]:
+def credstore_db_session() -> Generator[Session, None, None]:
     engine = create_engine('sqlite:///:memory:')
     Base.metadata.create_all(engine)
     SessionFactory = sessionmaker(bind=engine)
@@ -25,8 +25,8 @@ def create_db_session() -> Generator[Session, None, None]:
     Base.metadata.drop_all(engine)
     engine.dispose()
 
-testbase.originate.parameter(create_db_session, identifier='db_session')
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_creation(db_session: Session):
     store = CredentialStore(db_session)
     cred, plain_token = store.create("my-app", expires_in_days=30)
@@ -35,6 +35,7 @@ def test_credential_creation(db_session: Session):
     testbase.assert_equal(cred.label, "my-app")
     testbase.assert_true(cred.expires_at is not None)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_validation_success(db_session: Session):
     store = CredentialStore(db_session)
     cred, plain_token = store.create("my-app")
@@ -44,6 +45,7 @@ def test_credential_validation_success(db_session: Session):
     testbase.assert_equal(validated_cred.id, cred.id)
     testbase.assert_true(validated_cred.last_used_at is not None)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_validation_failure(db_session: Session):
     store = CredentialStore(db_session)
     store.create("my-app")
@@ -51,6 +53,7 @@ def test_credential_validation_failure(db_session: Session):
     validated_cred = store.validate("invalid_token")
     testbase.assert_true(validated_cred is None)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_revocation(db_session: Session):
     store = CredentialStore(db_session)
     cred, plain_token = store.create("my-app")
@@ -60,6 +63,7 @@ def test_credential_revocation(db_session: Session):
     validated_cred = store.validate(plain_token)
     testbase.assert_true(validated_cred is None)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_expiration(db_session: Session):
     store = CredentialStore(db_session)
     cred, plain_token = store.create("my-app", expires_in_days=-1) # Expired 1 day ago
@@ -67,6 +71,7 @@ def test_credential_expiration(db_session: Session):
     validated_cred = store.validate(plain_token)
     testbase.assert_true(validated_cred is None)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_rotation(db_session: Session):
     store = CredentialStore(db_session)
     cred, old_token = store.create("my-app")
@@ -83,6 +88,7 @@ def test_credential_rotation(db_session: Session):
     testbase.assert_true(validated_cred is not None)
     testbase.assert_equal(validated_cred.label, "my-app")
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_list_credentials(db_session: Session):
     # Clear any existing credentials before testing
     from ccai.timetravelserver.persistence.models import Credential
@@ -99,6 +105,7 @@ def test_list_credentials(db_session: Session):
         testbase.assert_true("token_hash" not in cred_meta)
         testbase.assert_true("label" in cred_meta)
 
+@testbase.attach.parameter(credstore_db_session, identifier='db_session')
 def test_credential_deletion(db_session: Session):
     store = CredentialStore(db_session)
     cred, plain_token = store.create("my-app")

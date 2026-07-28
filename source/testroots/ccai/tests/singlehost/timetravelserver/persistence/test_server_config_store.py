@@ -13,7 +13,7 @@ from ccai.timetravelserver.persistence.models import Base, ServerConfiguration
 from ccai.timetravelserver.persistence.server_config_store import ServerConfigStore, CONFIG_SCHEMA
 
 @testbase.register.resource_factory()
-def create_db_session() -> Generator[Session, None, None]:
+def configstore_db_session() -> Generator[Session, None, None]:
     engine = create_engine('sqlite:///:memory:')
     Base.metadata.create_all(engine)
     SessionFactory = sessionmaker(bind=engine)
@@ -23,13 +23,14 @@ def create_db_session() -> Generator[Session, None, None]:
     Base.metadata.drop_all(engine)
     engine.dispose()
 
-testbase.originate.parameter(create_db_session, identifier='db_session')
 
+@testbase.attach.parameter(configstore_db_session, identifier='db_session')
 def test_config_get_default(db_session: Session):
     store = ServerConfigStore(db_session)
     val = store.get("listen_port")
     testbase.assert_equal(val, 8080)
 
+@testbase.attach.parameter(configstore_db_session, identifier='db_session')
 def test_config_set_and_get(db_session: Session):
     store = ServerConfigStore(db_session)
     testbase.assert_true(store.set("listen_port", 9090))
@@ -41,14 +42,17 @@ def test_config_set_and_get(db_session: Session):
     val = store.get("listen_port")
     testbase.assert_equal(val, 7070)
 
+@testbase.attach.parameter(configstore_db_session, identifier='db_session')
 def test_config_set_invalid_type(db_session: Session):
     store = ServerConfigStore(db_session)
     testbase.assert_false(store.set("listen_port", "not-an-int"))
 
+@testbase.attach.parameter(configstore_db_session, identifier='db_session')
 def test_config_set_unknown_key(db_session: Session):
     store = ServerConfigStore(db_session)
     testbase.assert_false(store.set("unknown_key", "value"))
 
+@testbase.attach.parameter(configstore_db_session, identifier='db_session')
 def test_config_get_all(db_session: Session):
     db_session.query(ServerConfiguration).delete()
     db_session.commit()
