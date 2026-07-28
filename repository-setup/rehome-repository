@@ -184,7 +184,12 @@ def generate_directories():
 
 def generate_python_path():
 
-    folder_testbase_root = os.path.join(REPOSITORY_SOURCE_FOLDER, "testroots", "testbase")
+    # This repository has TWO testroots with different runners. The testbase
+    # tests are the `ccai` package under source/testroots (marked by
+    # __testroot__.py there); the pytest tests live in source/testroots/pytest
+    # and are imported as top-level modules, so that directory has to be on
+    # the path in its own right.
+    folder_testbase_root = os.path.join(REPOSITORY_SOURCE_FOLDER, "testroots", "pytest")
     folder_packages = os.path.join(REPOSITORY_SOURCE_FOLDER, "packages")
     folder_service = os.path.join(REPOSITORY_SOURCE_FOLDER, "service")
     # The site tree holds deployable app code (this repo's level-5 REST APIs

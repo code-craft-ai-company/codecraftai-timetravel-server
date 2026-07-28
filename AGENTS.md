@@ -112,7 +112,38 @@ Features are organized into layers where each layer builds on the one below it.
 # Testing Conventions
 The 'codecraftai-timetravel-service' package repository utilizes the 'testbase' framework in order to run tests.  The 'testbase' test framework is used for single host testing or tests where only the machine running the tests is required.
 
-Test are organized at the lowest level by resource configuration.  For example, all the single host tests for this package are in the folder 'source/testroots/ccai/tests/singlehost/webworks'.
+Test are organized at the lowest level by resource configuration.  For example, all the single host tests for this package are in the folder 'source/testroots/ccai/tests/singlehost/timetravelserver'.
+
+This repository has TWO testroots on TWO runners. That is not tidy, but it is
+what exists, so know which you are in before adding a test:
+
+- `source/testroots/ccai/` — testbase. Marked by `__testroot__.py` at
+  `source/testroots/`. The `persistence` tests here declare resources with
+  `testbase.register.resource_factory()` and attach them PER TEST with
+  `testbase.attach.parameter(...)`. Each factory is self-contained — it builds
+  its own engine, sessionmaker and session — because an attached factory does
+  not get its own parameters resolved from sibling attached resources. Run:
+
+      set -a; . ./.env; set +a
+      .venv/bin/testbase testing run \
+          --root source/testroots/ccai/tests/singlehost/timetravelserver/persistence \
+          --includes="*" --output=./.output
+
+  The `registration` and `tracedata` modules under this root are still pytest
+  and run with pytest; converting them needs a bundle resource, since their
+  tests take several co-dependent objects that must share one database.
+
+- `source/testroots/pytest/` — pytest, imported as top-level modules, so this
+  directory is on PYTHONPATH in its own right. Renamed from `testroots/testbase`
+  on 2026-07-28: it held the PYTEST tests while the testbase ones sat under
+  `ccai/`, which read exactly backwards. Run:
+
+      set -a; . ./.env; set +a
+      .venv/bin/python -m pytest source/testroots/pytest -q
+
+Note `source/site` must be on PYTHONPATH — the level-5 REST APIs live at
+`source/site/ccai/timetravelwebsite` and nothing imports without it. The `.env`
+generator in `repository-setup/rehome-repository` adds it.
 
 AI based testing should run only the 'singlehost' tests tests with:
 
