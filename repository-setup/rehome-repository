@@ -187,6 +187,11 @@ def generate_python_path():
     folder_testbase_root = os.path.join(REPOSITORY_SOURCE_FOLDER, "testroots", "testbase")
     folder_packages = os.path.join(REPOSITORY_SOURCE_FOLDER, "packages")
     folder_service = os.path.join(REPOSITORY_SOURCE_FOLDER, "service")
+    # The site tree holds deployable app code (this repo's level-5 REST APIs
+    # live at source/site/ccai/timetravelwebsite). It was missing from the
+    # generated PYTHONPATH, so every test importing them failed to collect --
+    # a missing path entry that read as missing code.
+    folder_site = os.path.join(REPOSITORY_SOURCE_FOLDER, "site")
     folder_testroots = os.path.join(REPOSITORY_SOURCE_FOLDER, "testroots")
     folder_tests = os.path.join(REPOSITORY_SOURCE_FOLDER, "tests")
     folder_tools = os.path.join(REPOSITORY_SOURCE_FOLDER, "tools")
@@ -195,6 +200,7 @@ def generate_python_path():
         folder_testbase_root,
         folder_packages,
         folder_service,
+        folder_site,
         folder_testroots,
         folder_tests,
         folder_tools,

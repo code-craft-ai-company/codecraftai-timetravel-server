@@ -86,9 +86,21 @@ def test_error_response():
 
 
 def test_connection_refused():
+    # Bind a port, learn its number, then close it — connecting to a port
+    # that was just released refuses deterministically on every platform.
+    #
+    # This used to dial 127.0.0.1:0. Port 0 means "any port" when BINDING;
+    # connecting to it is not a refused connection but an invalid address,
+    # and macOS answers EADDRNOTAVAIL — an OSError that is NOT a
+    # ConnectionError, so the test failed here while passing on Linux.
+    probe = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    probe.bind(("127.0.0.1", 0))
+    closed_port = probe.getsockname()[1]
+    probe.close()
+
     dispatcher = CommandDispatcher("test_token")
     with pytest.raises(ConnectionError) as exc_info:
-        dispatcher.dispatch("127.0.0.1:0", "list_portals")
+        dispatcher.dispatch(f"127.0.0.1:{closed_port}", "list_portals")
     assert "refused" in str(exc_info.value).lower()
 
 

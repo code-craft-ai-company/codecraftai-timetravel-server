@@ -1,9 +1,33 @@
 import pytest
 import socket
 import os
+import shutil
 import struct
+import tempfile
 import time
 from ccai.timetravelserver.streamreceiver.unix_receiver import UnixSocketStreamReceiver
+
+
+@pytest.fixture
+def sock_dir():
+    """
+    A SHORT directory for unix socket paths.
+
+    AF_UNIX caps a socket path near 104 bytes on macOS, and pytest's
+    `tmp_path` derives its directory from the test's NAME — so the
+    longer-named tests in this module built paths over the limit and failed
+    with 'AF_UNIX path too long' while the shortest one passed. That made it
+    look like a receiver bug rather than a path-length one, and it only
+    started happening when the repository moved to a deeper directory.
+
+    mkdtemp under the system temp root is short and name-independent, so the
+    limit cannot be reached by renaming a test.
+    """
+    path = tempfile.mkdtemp(prefix='ttr')
+    try:
+        yield path
+    finally:
+        shutil.rmtree(path, ignore_errors=True)
 
 class MockSession:
     def __init__(self, sock, token):
@@ -22,8 +46,8 @@ def create_unix_receiver(socket_path, max_conns, auth_cb, session_factory):
     receiver = UnixSocketStreamReceiver(socket_path, max_conns, auth_cb, session_factory)
     return receiver
 
-def test_unix_receiver_accepts_connection(tmp_path):
-    socket_path = str(tmp_path / "test.sock")
+def test_unix_receiver_accepts_connection(sock_dir):
+    socket_path = os.path.join(sock_dir, 'test.sock')
     auth_cb = lambda t: True
     session_factory = lambda s, t: MockSession(s, t)
 
@@ -48,8 +72,8 @@ def test_unix_receiver_accepts_connection(tmp_path):
         client.close()
         receiver.stop()
 
-def test_unix_receiver_cleans_up_stale_socket(tmp_path):
-    socket_path = str(tmp_path / "stale.sock")
+def test_unix_receiver_cleans_up_stale_socket(sock_dir):
+    socket_path = os.path.join(sock_dir, 'stale.sock')
     # Create a stale socket file
     with open(socket_path, 'w') as f:
         f.write('stale')
@@ -64,8 +88,8 @@ def test_unix_receiver_cleans_up_stale_socket(tmp_path):
     assert os.path.exists(socket_path)
     receiver.stop()
 
-def test_unix_receiver_cleans_up_on_stop(tmp_path):
-    socket_path = str(tmp_path / "cleanup.sock")
+def test_unix_receiver_cleans_up_on_stop(sock_dir):
+    socket_path = os.path.join(sock_dir, 'cleanup.sock')
     auth_cb = lambda t: True
     session_factory = lambda s, t: MockSession(s, t)
 
@@ -78,8 +102,8 @@ def test_unix_receiver_cleans_up_on_stop(tmp_path):
     receiver.stop()
     assert not os.path.exists(socket_path)
 
-def test_unix_receiver_auth_rejects(tmp_path):
-    socket_path = str(tmp_path / "auth.sock")
+def test_unix_receiver_auth_rejects(sock_dir):
+    socket_path = os.path.join(sock_dir, 'auth.sock')
     auth_cb = lambda t: False
     session_factory = lambda s, t: MockSession(s, t)
 

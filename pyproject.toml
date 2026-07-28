@@ -21,6 +21,12 @@ sqlalchemy = "^2.0.48"
 alembic = "^1.18.4"
 
 [tool.poetry.group.dev.dependencies]
+# The level-5 REST APIs under source/site were refactored onto webworks'
+# RestBlueprint (commit 07e0830) but webworks was never declared, so every
+# module importing them failed. testbase backs the resource-based suite
+# under source/testroots/ccai.
+codecraftai-webworks = { git = "https://github.com/automationmojo/codecraftai-webworks.git", branch = "main" }
+codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
 pytest = "^9.0.2"
 myst-parser = "^0.18.1"
 sphinx = ">=1.6,<6"
