@@ -74,6 +74,4 @@ jobs:
           # load the development environment file that rehome-repository wrote.
           source ./.venv/bin/activate 2>/dev/null || source ./.venv/Scripts/activate
           set -a; . ./.env; set +a
-          # The registration tests are pytest-style (fixtures); everything else runs under testbase.
-          python -m pytest -q ./source/testroots/ccai/tests/singlehost/timetravelserver/registration ./source/testroots/pytest
-          testbase testing run --root ./source/testroots/ccai --includes=ccai.tests.singlehost.timetravelserver.persistence --includes=ccai.tests.singlehost.timetravelserver.tracedata
+          testbase testing run --root ./source/testroots/ccai --includes=ccai.tests.singlehost.timetravelserver --output=./.output
