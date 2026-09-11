@@ -114,32 +114,35 @@ The 'codecraftai-timetravel-service' package repository utilizes the 'testbase' 
 
 Test are organized at the lowest level by resource configuration.  For example, all the single host tests for this package are in the folder 'source/testroots/ccai/tests/singlehost/timetravelserver'.
 
-This repository has TWO testroots on TWO runners. That is not tidy, but it is
-what exists, so know which you are in before adding a test:
+This repository has ONE testroot on ONE runner: testbase.  pytest is not used
+anywhere in the suite.
 
 - `source/testroots/ccai/` — testbase. Marked by `__testroot__.py` at
-  `source/testroots/`. The `persistence` tests here declare resources with
-  `testbase.register.resource_factory()` and attach them PER TEST with
-  `testbase.attach.parameter(...)`. Each factory is self-contained — it builds
-  its own engine, sessionmaker and session — because an attached factory does
-  not get its own parameters resolved from sibling attached resources. Run:
+  `source/testroots/`. All single-host tests live under
+  `source/testroots/ccai/tests/singlehost/timetravelserver/` in packages that
+  mirror the product hierarchy (`persistence`, `registration`, `debugcontrol`,
+  `streamreceiver`, `tracedata`, `website/restapis`). Run the whole suite with:
 
       set -a; . ./.env; set +a
       .venv/bin/testbase testing run \
-          --root source/testroots/ccai/tests/singlehost/timetravelserver/persistence \
-          --includes="*" --output=./.output
+          --root ./source/testroots/ccai \
+          --includes=ccai.tests.singlehost.timetravelserver --output=./.output
 
-  The `registration` and `tracedata` modules under this root are still pytest
-  and run with pytest; converting them needs a bundle resource, since their
-  tests take several co-dependent objects that must share one database.
+  Shared helpers live under `source/testroots/ccai/testshared/`:
+  `assertions.assert_raises` replaces `pytest.raises`,
+  `unixsockets.require_unix_domain_sockets` raises `SkipError` where
+  `AF_UNIX` is missing, and `factories/timetravelserver/memorydatabase.py`
+  provides the `create_memory_database` resource factory. Tests that need a
+  database attach it PER TEST with
+  `@testbase.attach.parameter(create_memory_database, identifier='db')` and
+  build their stores and services from the yielded `MemoryDatabase` bundle,
+  so every co-dependent object shares one in-memory database. The factory is
+  self-contained on purpose: an attached factory does not get its own
+  parameters resolved from sibling attached resources.
 
-- `source/testroots/pytest/` — pytest, imported as top-level modules, so this
-  directory is on PYTHONPATH in its own right. Renamed from `testroots/testbase`
-  on 2026-07-28: it held the PYTEST tests while the testbase ones sat under
-  `ccai/`, which read exactly backwards. Run:
-
-      set -a; . ./.env; set +a
-      .venv/bin/python -m pytest source/testroots/pytest -q
+- `source/testroots/pytest/` no longer exists (removed 2026-09-10 when the
+  last pytest modules were converted). Do not add pytest tests or
+  `conftest.py` files.
 
 Note `source/site` must be on PYTHONPATH — the level-5 REST APIs live at
 `source/site/ccai/timetravelwebsite` and nothing imports without it. The `.env`
