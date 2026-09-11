@@ -7,6 +7,15 @@ import tempfile
 import time
 from ccai.timetravelserver.streamreceiver.unix_receiver import UnixSocketStreamReceiver
 
+# Unix domain sockets do not exist on Windows: `socket.AF_UNIX` is absent there,
+# so every test in this module skips rather than failing inside the receiver.
+# The product module itself imports cleanly on Windows; only binding needs
+# AF_UNIX, which is why the guard is on the tests and not on the import.
+pytestmark = pytest.mark.skipif(
+    not hasattr(socket, "AF_UNIX"),
+    reason="Unix domain sockets (socket.AF_UNIX) are not available on this platform",
+)
+
 
 @pytest.fixture
 def sock_dir():
