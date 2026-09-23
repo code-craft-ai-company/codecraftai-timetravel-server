@@ -14,7 +14,7 @@ from ccai.testshared.timetravelserver.processes import add_sample_process
 
 from ccai.timetravelserver.persistence.models import PortalSnapshot
 from ccai.timetravelserver.registration.process_registry import ProcessRegistry
-from ccai.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher, CommandError
+from ccai.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher
 from ccai.timetravelserver.debugcontrol.portal_discovery import PortalDiscoveryService, PortalInfo
 
 

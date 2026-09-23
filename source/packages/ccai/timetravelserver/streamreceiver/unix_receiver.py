@@ -23,4 +23,6 @@ class UnixSocketStreamReceiver(BaseStreamReceiver):
             try:
                 os.remove(self.socket_path)
             except OSError:
+                # Best-effort removal of the socket file; it may have been removed concurrently and a
+                # stale file is removed again by the next bind.
                 pass

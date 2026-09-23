@@ -1,7 +1,7 @@
 import uuid
 import datetime
 from dataclasses import dataclass
-from typing import Callable, Optional, List, Dict, Any
+from typing import Callable, Optional, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
 

@@ -2,7 +2,6 @@ import uuid
 from typing import Callable, Dict, List
 
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import NoResultFound
 
 from ccai.timetravelserver.persistence.models import PortalSnapshot
 from ccai.timetravelserver.registration.process_registry import ProcessRegistry

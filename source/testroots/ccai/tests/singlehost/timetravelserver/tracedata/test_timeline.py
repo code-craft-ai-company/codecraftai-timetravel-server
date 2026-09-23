@@ -4,8 +4,8 @@
     :synopsis: Tests for the TimelineBuilder and Timeline.
 """
 
-from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent
-from ccai.timetravelserver.tracedata.timeline import TimelineBuilder, Timeline
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType
+from ccai.timetravelserver.tracedata.timeline import TimelineBuilder
 
 def create_mock_event(event_type: EventType, timestamp: float) -> TraceEvent:
     return TraceEvent(

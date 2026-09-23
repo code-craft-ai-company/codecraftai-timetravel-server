@@ -5,9 +5,12 @@
 """
 
 from ccai.timetravelwebsite.restapis.versions.v1.feature.trace_data import (
-    MOCK_EVENTS, MOCK_CALL_GRAPH, MOCK_VARIABLES, RequireAuth,
-    list_trace_events, get_trace_timeline, get_trace_call_graph,
-    get_trace_variables, get_trace_variable_history
+    RequireAuth,
+    list_trace_events,
+    get_trace_timeline,
+    get_trace_call_graph,
+    get_trace_variables,
+    get_trace_variable_history,
 )
 
 class MockRequest:

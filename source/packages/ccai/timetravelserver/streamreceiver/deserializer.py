@@ -4,7 +4,7 @@ import struct
 import pickle
 import logging
 from typing import BinaryIO, Iterator, Any, Dict, FrozenSet, Tuple
-from ccai.timetravelserver.tracedata.events import TraceEvent, EventType, CallEvent, ReturnEvent, LineEvent
+from ccai.timetravelserver.tracedata.events import TraceEvent, EventType
 
 logger = logging.getLogger(__name__)
 

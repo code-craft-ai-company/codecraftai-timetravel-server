@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker, Session
 import ccai.testbase as testbase
 
 from ccai.timetravelserver.persistence.models import Base, ServerConfiguration
-from ccai.timetravelserver.persistence.server_config_store import ServerConfigStore, CONFIG_SCHEMA
+from ccai.timetravelserver.persistence.server_config_store import ServerConfigStore
 
 @testbase.register.resource_factory()
 def configstore_db_session() -> Generator[Session, None, None]:

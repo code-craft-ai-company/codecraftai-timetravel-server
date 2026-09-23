@@ -1,9 +1,5 @@
 
-from flask import request
-
 from flask_restx import Namespace, Resource
-from flask_restx.reqparse import RequestParser
-from flask_restx import fields
 
 EXAMPLE_NAMESPACE_PATH = "/example"
 

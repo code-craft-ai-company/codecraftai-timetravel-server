@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Iterable, Iterator, Dict, Any, Optional
+from typing import List, Iterable, Iterator, Dict, Optional
 import heapq
 
 from ccai.timetravelserver.tracedata.events import TraceEvent

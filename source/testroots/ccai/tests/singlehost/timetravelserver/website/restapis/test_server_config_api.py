@@ -7,8 +7,10 @@
 from ccai.testshared.assertions import assert_raises
 
 from ccai.timetravelwebsite.restapis.versions.v1.feature.server_config import (
-    MOCK_SERVER_CONFIGS, RequireAdmin, get_all_server_configs,
-    get_server_config, update_server_config
+    MOCK_SERVER_CONFIGS,
+    RequireAdmin,
+    get_all_server_configs,
+    update_server_config,
 )
 
 class MockRequest:

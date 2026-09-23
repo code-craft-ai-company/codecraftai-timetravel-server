@@ -14,7 +14,9 @@ from ccai.testshared.factories.timetravelserver.memorydatabase import MemoryData
 
 from ccai.timetravelserver.persistence.models import RegisteredProcess, PortalSnapshot
 from ccai.timetravelserver.registration.metadata_refresh import (
-    MetadataRefreshService, CommandDispatcher, RefreshResult, CommandDispatcherError
+    MetadataRefreshService,
+    CommandDispatcher,
+    CommandDispatcherError,
 )
 
 

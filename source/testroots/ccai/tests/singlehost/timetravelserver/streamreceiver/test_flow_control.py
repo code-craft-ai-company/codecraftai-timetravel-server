@@ -4,7 +4,6 @@
     :synopsis: Tests for the FlowController back-pressure logic.
 """
 
-import time
 from ccai.timetravelserver.streamreceiver.flow_control import FlowController, FlowControlStatus
 
 def test_flow_controller_registration():

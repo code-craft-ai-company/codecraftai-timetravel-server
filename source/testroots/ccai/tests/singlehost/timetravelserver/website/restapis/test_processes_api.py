@@ -7,8 +7,13 @@
 from ccai.testshared.assertions import assert_raises
 
 from ccai.timetravelwebsite.restapis.versions.v1.feature.processes import (
-    MOCK_PROCESSES, RequireAuth, list_processes, get_process, delete_process, refresh_process,
-    disconnect_process, register_process, unregister_process, heartbeat_process
+    MOCK_PROCESSES,
+    RequireAuth,
+    list_processes,
+    get_process,
+    delete_process,
+    refresh_process,
+    disconnect_process,
 )
 
 class MockRequest:
@@ -65,7 +70,7 @@ def test_disconnect_changes_state():
     MOCK_PROCESSES.clear()
     MOCK_PROCESSES["proc-1"] = {"id": "proc-1", "state": "connected"}
 
-    data = disconnect_process("proc-1")
+    disconnect_process("proc-1")
     assert MOCK_PROCESSES["proc-1"]["state"] == "disconnected"
 
 def test_delete_removes_disconnected_process():
@@ -76,7 +81,7 @@ def test_delete_removes_disconnected_process():
     with assert_raises(ValueError, match="Can only delete disconnected"):
         delete_process("proc-1")
 
-    data = delete_process("proc-2")
+    delete_process("proc-2")
     assert "proc-2" not in MOCK_PROCESSES
 
 

@@ -5,7 +5,6 @@
 """
 
 import socket
-import threading
 import struct
 import time
 from ccai.timetravelserver.streamreceiver.tcp_receiver import TcpStreamReceiver
@@ -21,6 +20,8 @@ class MockSession:
         try:
             self.sock.recv(1024)
         except Exception:
+            # The mock session only blocks until data arrives or the connection closes; a socket error
+            # simply ends the mock session.
             pass
 
 def create_tcp_receiver(host, port, max_conns, auth_cb, session_factory):
@@ -31,7 +32,7 @@ def test_tcp_receiver_accepts_connection():
     # Setup
     port = 50000
     auth_cb = lambda t: True
-    session_factory = lambda s, t: MockSession(s, t)
+    session_factory = MockSession
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
@@ -58,7 +59,7 @@ def test_tcp_receiver_auth_rejects():
     # Setup
     port = 50001
     auth_cb = lambda t: False
-    session_factory = lambda s, t: MockSession(s, t)
+    session_factory = MockSession
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
@@ -85,7 +86,7 @@ def test_tcp_receiver_connection_limit():
     # Setup
     port = 50002
     auth_cb = lambda t: True
-    session_factory = lambda s, t: MockSession(s, t)
+    session_factory = MockSession
 
     # Only allow 1 connection
     receiver = create_tcp_receiver("127.0.0.1", port, 1, auth_cb, session_factory)
@@ -126,6 +127,7 @@ def test_tcp_receiver_connection_limit():
             try:
                 c.close()
             except Exception:
+                # Best-effort cleanup; the server may already have closed the rejected connection.
                 pass
         receiver.stop()
 
@@ -168,6 +170,7 @@ def test_tcp_receiver_graceful_stop():
         resp = client.recv(1024)
         assert resp == b''
     except (socket.error, socket.timeout):
+        # A socket error also shows that the stopped receiver closed the connection.
         pass
 
     client.close()
@@ -189,6 +192,7 @@ def test_tcp_receiver_data_forwarding():
                 data = self.sock.recv(1024)
                 received_data.append(data)
             except Exception:
+                # A read failure leaves 'received_data' empty, which the test assertion reports.
                 pass
 
     session_factory = lambda s, t: DataRecordingSession(s, t)

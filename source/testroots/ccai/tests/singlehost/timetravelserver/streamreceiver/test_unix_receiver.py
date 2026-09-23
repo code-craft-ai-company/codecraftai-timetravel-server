@@ -34,6 +34,8 @@ class MockSession:
         try:
             self.sock.recv(1024)
         except Exception:
+            # The mock session only blocks until data arrives or the connection closes; a socket error
+            # simply ends the mock session.
             pass
 
 def create_unix_receiver(socket_path, max_conns, auth_cb, session_factory):
@@ -46,7 +48,7 @@ def test_unix_receiver_accepts_connection():
     with temporary_socket_directory() as sock_dir:
         socket_path = os.path.join(sock_dir, 'test.sock')
         auth_cb = lambda t: True
-        session_factory = lambda s, t: MockSession(s, t)
+        session_factory = MockSession
 
         receiver = create_unix_receiver(socket_path, 10, auth_cb, session_factory)
         receiver.start()
@@ -79,7 +81,7 @@ def test_unix_receiver_cleans_up_stale_socket():
             f.write('stale')
 
         auth_cb = lambda t: True
-        session_factory = lambda s, t: MockSession(s, t)
+        session_factory = MockSession
 
         receiver = create_unix_receiver(socket_path, 10, auth_cb, session_factory)
         receiver.start()
@@ -94,7 +96,7 @@ def test_unix_receiver_cleans_up_on_stop():
     with temporary_socket_directory() as sock_dir:
         socket_path = os.path.join(sock_dir, 'cleanup.sock')
         auth_cb = lambda t: True
-        session_factory = lambda s, t: MockSession(s, t)
+        session_factory = MockSession
 
         receiver = create_unix_receiver(socket_path, 10, auth_cb, session_factory)
         receiver.start()
@@ -111,7 +113,7 @@ def test_unix_receiver_auth_rejects():
     with temporary_socket_directory() as sock_dir:
         socket_path = os.path.join(sock_dir, 'auth.sock')
         auth_cb = lambda t: False
-        session_factory = lambda s, t: MockSession(s, t)
+        session_factory = MockSession
 
         receiver = create_unix_receiver(socket_path, 10, auth_cb, session_factory)
         receiver.start()

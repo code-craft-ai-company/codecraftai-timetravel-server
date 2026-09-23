@@ -11,12 +11,7 @@ from ccai.timetravelserver.tracedata.events import (
     CallEvent,
     ReturnEvent,
     LineEvent,
-    VariableSnapshotEvent,
-    PortalEnterEvent,
-    PortalExitEvent,
-    GatewayStartEvent,
-    GatewayStopEvent,
-    from_pod_event
+    from_pod_event,
 )
 
 def test_event_instantiation():

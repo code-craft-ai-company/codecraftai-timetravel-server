@@ -7,7 +7,6 @@
 from typing import Generator
 
 import uuid
-import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import IntegrityError

@@ -48,6 +48,7 @@ def test_read_non_existent(storage: FilesystemTraceStorage):
         storage.read("/tmp/does_not_exist.trace")
         testbase.assert_true(False, "Should have raised FileNotFoundError")
     except FileNotFoundError:
+        # Expected: reading a reference that does not exist must raise FileNotFoundError.
         pass
 
 @testbase.attach.parameter(fsbackend_trace_storage, identifier='storage')
@@ -87,7 +88,7 @@ def test_list_expired(storage: FilesystemTraceStorage):
     os.utime(final_ref1, (old_time, old_time))
 
     ref2 = storage.write(b"new", "session_new")
-    final_ref2 = storage.finalize(ref2)
+    storage.finalize(ref2)
 
     cutoff = datetime.datetime.now() - datetime.timedelta(days=1)
     expired = storage.list_expired(cutoff)

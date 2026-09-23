@@ -4,8 +4,8 @@
     :synopsis: Tests for the VariableTracker.
 """
 
-from ccai.timetravelserver.tracedata.events import EventType, VariableSnapshotEvent, TraceEvent
-from ccai.timetravelserver.tracedata.variable_tracker import VariableTracker, VariableChange
+from ccai.timetravelserver.tracedata.events import EventType, VariableSnapshotEvent
+from ccai.timetravelserver.tracedata.variable_tracker import VariableTracker
 
 def create_snap(name: str, value: str, ts: float) -> VariableSnapshotEvent:
     return VariableSnapshotEvent(

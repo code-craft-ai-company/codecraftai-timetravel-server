@@ -1,6 +1,6 @@
 import logging
 import threading
-from typing import Dict, Any
+from typing import Dict
 from enum import Enum
 
 logger = logging.getLogger(__name__)

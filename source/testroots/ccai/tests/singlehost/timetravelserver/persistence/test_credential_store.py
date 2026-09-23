@@ -4,7 +4,6 @@
     :synopsis: Tests for the CredentialStore.
 """
 
-import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import ccai.testbase as testbase

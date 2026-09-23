@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Set, Iterable
 
 from ccai.timetravelserver.tracedata.events import TraceEvent, EventType

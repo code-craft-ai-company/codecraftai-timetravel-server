@@ -5,7 +5,6 @@
 """
 
 import io
-import os
 import struct
 import pickle
 import tempfile

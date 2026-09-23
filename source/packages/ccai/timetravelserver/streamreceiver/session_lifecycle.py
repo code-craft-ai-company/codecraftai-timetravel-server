@@ -1,6 +1,6 @@
 import socket
 import logging
-from typing import BinaryIO, Any
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -96,4 +96,5 @@ class StreamSessionLifecycle:
         try:
             self.sock.close()
         except Exception:
+            # Best-effort close during session cleanup; the peer may already have closed the socket.
             pass

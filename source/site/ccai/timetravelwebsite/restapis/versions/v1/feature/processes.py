@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any
 from ccai.webworks.endpoints.restblueprint import RestBlueprint
 from ccai.webworks.endpoints.accesspolicy import AccessPolicy
 

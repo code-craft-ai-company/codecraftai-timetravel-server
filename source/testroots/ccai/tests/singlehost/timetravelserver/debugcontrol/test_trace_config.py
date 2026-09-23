@@ -11,8 +11,8 @@ from ccai.testshared.factories.timetravelserver.memorydatabase import MemoryData
 from ccai.testshared.timetravelserver.processes import add_sample_process
 
 from ccai.timetravelserver.registration.process_registry import ProcessRegistry
-from ccai.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher, CommandError
-from ccai.timetravelserver.debugcontrol.trace_config import TraceConfigService, TraceConfigInfo
+from ccai.timetravelserver.debugcontrol.command_dispatcher import CommandDispatcher
+from ccai.timetravelserver.debugcontrol.trace_config import TraceConfigService
 
 
 class MockCommandDispatcher(CommandDispatcher):

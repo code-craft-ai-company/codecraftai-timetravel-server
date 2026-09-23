@@ -32,6 +32,8 @@ class BaseStreamReceiver:
             try:
                 self._server_socket.close()
             except Exception:
+                # Best-effort close during shutdown; a failure to close the listening socket must not
+                # prevent the socket file and client connections from being cleaned up.
                 pass
             self._cleanup_socket()
 
@@ -44,6 +46,8 @@ class BaseStreamReceiver:
                     conn.shutdown(socket.SHUT_RDWR)
                     conn.close()
                 except Exception:
+                    # Best-effort shutdown; the peer may already have closed the connection, and one
+                    # failing connection must not prevent the remaining connections from being closed.
                     pass
             self._connections.clear()
 
@@ -69,6 +73,8 @@ class BaseStreamReceiver:
                     try:
                         client_sock.close()
                     except Exception:
+                        # Best-effort close of a rejected connection; a failure here must not stop the
+                        # accept loop from serving further connections.
                         pass
                     continue
 
@@ -89,6 +95,8 @@ class BaseStreamReceiver:
             try:
                 client_sock.close()
             except Exception:
+                # Best-effort close in cleanup; the connection may already be closed and a failure here
+                # must not prevent the connection from being removed from the registry.
                 pass
 
             with self._connections_lock:

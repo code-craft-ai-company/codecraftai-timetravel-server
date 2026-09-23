@@ -95,8 +95,8 @@ def test_search_by_app_and_host(db: MemoryDatabase):
 def test_sorting(db: MemoryDatabase):
     process_registry = ProcessRegistry(db.session_factory)
 
-    p1 = create_test_process(db.session, "app1")
-    p2 = create_test_process(db.session, "app2")
+    create_test_process(db.session, "app1")
+    create_test_process(db.session, "app2")
 
     # Wait to ensure different timestamps
     time.sleep(0.1)

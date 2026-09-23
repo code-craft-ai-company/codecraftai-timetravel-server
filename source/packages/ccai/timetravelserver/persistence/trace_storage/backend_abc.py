@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 import datetime
 from abc import ABC, abstractmethod
 
