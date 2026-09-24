@@ -30,12 +30,13 @@ def create_tcp_receiver(host, port, max_conns, auth_cb, session_factory):
 
 def test_tcp_receiver_accepts_connection():
     # Setup
-    port = 50000
+    port = 0  # let the OS pick a free port; fixed ports can fall in a reserved range on Windows
     auth_cb = lambda t: True
     session_factory = MockSession
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
+    port = receiver.port
 
     time.sleep(0.1)  # wait for server to start
 
@@ -57,12 +58,13 @@ def test_tcp_receiver_accepts_connection():
 
 def test_tcp_receiver_auth_rejects():
     # Setup
-    port = 50001
+    port = 0  # let the OS pick a free port; fixed ports can fall in a reserved range on Windows
     auth_cb = lambda t: False
     session_factory = MockSession
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
+    port = receiver.port
 
     time.sleep(0.1)  # wait for server to start
 
@@ -84,13 +86,14 @@ def test_tcp_receiver_auth_rejects():
 
 def test_tcp_receiver_connection_limit():
     # Setup
-    port = 50002
+    port = 0  # let the OS pick a free port; fixed ports can fall in a reserved range on Windows
     auth_cb = lambda t: True
     session_factory = MockSession
 
     # Only allow 1 connection
     receiver = create_tcp_receiver("127.0.0.1", port, 1, auth_cb, session_factory)
     receiver.start()
+    port = receiver.port
 
     time.sleep(0.1)  # wait for server to start
 
@@ -132,7 +135,7 @@ def test_tcp_receiver_connection_limit():
         receiver.stop()
 
 def test_tcp_receiver_graceful_stop():
-    port = 50003
+    port = 0  # let the OS pick a free port; fixed ports can fall in a reserved range on Windows
     auth_cb = lambda t: True
 
     # Keep session running so we can test draining
@@ -150,6 +153,7 @@ def test_tcp_receiver_graceful_stop():
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
+    port = receiver.port
 
     time.sleep(0.1)
 
@@ -176,7 +180,7 @@ def test_tcp_receiver_graceful_stop():
     client.close()
 
 def test_tcp_receiver_data_forwarding():
-    port = 50004
+    port = 0  # let the OS pick a free port; fixed ports can fall in a reserved range on Windows
     auth_cb = lambda t: True
 
     received_data = []
@@ -199,6 +203,7 @@ def test_tcp_receiver_data_forwarding():
 
     receiver = create_tcp_receiver("127.0.0.1", port, 10, auth_cb, session_factory)
     receiver.start()
+    port = receiver.port
 
     time.sleep(0.1)
 
