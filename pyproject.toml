@@ -18,6 +18,10 @@ dependencies = [
     "alembic>=1.18.4,<2.0.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/code-craft-ai-company/codecraftai-timetravel-server"
+Issues = "https://github.com/code-craft-ai-company/codecraftai-timetravel-server/issues"
+
 [dependency-groups]
 dev = [
     # The level-5 REST APIs under source/site were refactored onto webworks'
